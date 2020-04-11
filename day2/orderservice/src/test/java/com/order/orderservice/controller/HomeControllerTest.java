@@ -10,6 +10,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -30,7 +31,7 @@ public class HomeControllerTest {
 
 	private MockMvc mockMvc;
 	
-	 @Mock
+	@Mock
 	 com.order.orderservice.service.OrderService OrderService;
 
 	@Before
@@ -48,6 +49,7 @@ public class HomeControllerTest {
 	
 	@Test
 	public void getAllOrderAssert() throws Exception {
+		Mockito.when(OrderService.getOrders()).thenReturn("orderList");
 		ResultActions resultActions = mockMvc.perform(get("/api/v1/orders"));
 		MvcResult result =  resultActions.andExpect(status().is(200)).andReturn();
 		assertEquals("orderList", result.getResponse().getContentAsString());
