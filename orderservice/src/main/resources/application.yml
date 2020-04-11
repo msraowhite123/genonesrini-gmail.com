@@ -1,0 +1,9 @@
+######## VARIABLES to be modified accordingly
+# environment
+environment: dev
+
+application:
+  version: v1
+
+server:
+  port: 8001
