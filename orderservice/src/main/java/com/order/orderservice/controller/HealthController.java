@@ -19,7 +19,6 @@ public class HealthController {
 
 	@RequestMapping(value = "/health", method = RequestMethod.GET)
 	public @ResponseBody Boolean healthCheck() {
-
 		return Boolean.TRUE;
 	}
 
