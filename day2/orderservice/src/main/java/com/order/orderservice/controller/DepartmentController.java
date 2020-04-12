@@ -10,26 +10,25 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.order.orderservice.model.Employee;
-import com.order.orderservice.repository.EmployeeRepository;
+import com.order.orderservice.model.Department;
+import com.order.orderservice.repository.DepartmentRepository;
 
 @Controller
 @RequestMapping("/api/v1")
-public class EmployeeController {
+public class DepartmentController {
 	@Autowired
-	private EmployeeRepository employeeRepository;
+	private DepartmentRepository departmentRepository;
 
-	@GetMapping("/employees")
+	@GetMapping("/department")
 	public String getAllEmployees(Model model) {
-
 		model.addAttribute("message", "List Of Employees");
-		model.addAttribute("tasks", employeeRepository.findAll());
+		model.addAttribute("tasks", departmentRepository.findAll());
 		return "view";
 	}
 
-	@PostMapping("/employees")
-	public String createEmployee(@Valid @RequestBody Employee employee) {
-		employeeRepository.save(employee);
+	@PostMapping("/department")
+	public String createEmployee(@Valid @RequestBody Department employee) {
+		departmentRepository.save(employee);
 		return "success";
 	}
 }

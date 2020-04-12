@@ -1,7 +1,6 @@
 package com.order.orderservice.controller;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -20,19 +19,18 @@ import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
-
 @SpringBootTest
 @RunWith(SpringRunner.class)
 @WebAppConfiguration
 public class HomeControllerTest {
-	
+
 	@InjectMocks
 	private HomeController orderController = new HomeController();
 
 	private MockMvc mockMvc;
-	
+
 	@Mock
-	 com.order.orderservice.service.OrderService OrderService;
+	com.order.orderservice.service.OrderService OrderService;
 
 	@Before
 	public void setUp() {
@@ -46,12 +44,12 @@ public class HomeControllerTest {
 		ResultActions resultActions = mockMvc.perform(get("/api/v1/orders"));
 		resultActions.andExpect(status().is(200));
 	}
-	
+
 	@Test
 	public void getAllOrderAssert() throws Exception {
 		Mockito.when(OrderService.getOrders()).thenReturn("orderList");
 		ResultActions resultActions = mockMvc.perform(get("/api/v1/orders"));
-		MvcResult result =  resultActions.andExpect(status().is(200)).andReturn();
+		MvcResult result = resultActions.andExpect(status().is(200)).andReturn();
 		assertEquals("orderList", result.getResponse().getContentAsString());
 	}
 
