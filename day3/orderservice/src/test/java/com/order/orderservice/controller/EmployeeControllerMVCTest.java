@@ -1,71 +1,49 @@
 package com.order.orderservice.controller;
 
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.CoreMatchers.notNullValue;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.MockitoAnnotations;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.http.HttpHeaders;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.order.orderservice.model.EmployeeCurdOperation;
 import com.order.orderservice.repository.EmployeeCurdRepository;
 
-@SpringBootTest
 @RunWith(SpringRunner.class)
-@WebAppConfiguration
+@WebMvcTest(EmployeeControllerIntegration.class)
 public class EmployeeControllerMVCTest {
 
-	@InjectMocks
-	private EmployeeControllerIntegration employeeControllerIntegration = new EmployeeControllerIntegration();
-
+	@Autowired
 	private MockMvc mockMvc;
 
-	@Mock
+	@MockBean
 	EmployeeCurdRepository employeeRepository;
-	
-	@Mock
-	EmployeeCurdOperation employeeCurdOperation;
 
 	@Before
 	public void setUp() {
-		MockitoAnnotations.initMocks(this);
-		mockMvc = MockMvcBuilders.standaloneSetup(employeeControllerIntegration).build();
 
 	}
 
-	
 	@Test
 	public void saveEmp() throws Exception {
-		
 		EmployeeCurdOperation employee = new EmployeeCurdOperation();
 		employee.setEmailId("admin@gmail.com");
 		employee.setFirstName("admin");
 		employee.setLastName("admin");
+		ObjectMapper objectMapper = new ObjectMapper();
+		Mockito.when(employeeRepository.save(employee)).thenReturn(employee);
 
-		
-		Mockito.when(employeeRepository.save(employeeCurdOperation)).thenReturn(employee);
-
-		String eda = "{\"id\":0,\"firstName\":\"admin\",\"lastName\":\"admin\",\"emailId\":\"admin@test.com\"}\n"
-				+ "";
-		String response = mockMvc.perform(post("/api/v1/employees").content(eda).header(HttpHeaders.CONTENT_TYPE,
-				MediaType.APPLICATION_JSON)).andDo(print()).andExpect(status().isOk()).andReturn().getResponse().getContentAsString();
-		assertNotNull(response);
+		String eda = "{\"id\":0,\"firstName\":\"admin\",\"lastName\":\"admin\",\"emailId\":\"admin@test.com\"}\n" + "";
+		mockMvc.perform(MockMvcRequestBuilders.post("/api/v1/employees").content(eda)
+				.contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON)).andExpect(status().isOk());
 	}
 }
