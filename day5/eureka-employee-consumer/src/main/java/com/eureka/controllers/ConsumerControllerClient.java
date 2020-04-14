@@ -23,9 +23,9 @@ import com.eureka.services.RemoteCallService;
 @RestController
 public class ConsumerControllerClient {
 	
-	/*
-	 * @Autowired private DiscoveryClient discoveryClient;
-	 */
+	
+	  @Autowired private DiscoveryClient discoveryClient;
+	 
 	
 	@Autowired
 	private LoadBalancerClient loadBalancer;
@@ -83,6 +83,27 @@ public class ConsumerControllerClient {
 		return null;
 	}
 	
+	
+	@RequestMapping(value = "/getZuleEmployee", method = RequestMethod.GET)
+	public String getZuleEmployee() throws RestClientException, IOException {
+
+		List<ServiceInstance> instances = discoveryClient.getInstances("EMPLOYEE-ZUUL-SERVICE");
+		ServiceInstance serviceInstance = instances.get(0);
+
+		String baseUrl = serviceInstance.getUri().toString();
+
+		baseUrl = baseUrl + "/producer/employee";
+
+		RestTemplate restTemplate = new RestTemplate();
+		ResponseEntity<String> response = null;
+		try {
+			response = restTemplate.exchange(baseUrl, HttpMethod.GET, getHeaders(), String.class);
+		} catch (Exception ex) {
+			System.out.println(ex);
+		}
+		System.out.println(response.getBody());
+		return response.getBody();
+	}
 	
 
 	private static HttpEntity<?> getHeaders() throws IOException {
