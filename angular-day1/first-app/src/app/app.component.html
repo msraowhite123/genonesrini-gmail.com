@@ -16,7 +16,10 @@
 
 <br>
 UserName
-<input type="text" [(ngModel)]='username'>
+<input type="text" [(ngModel)]="username">
 {{username}}
 <button [disabled]="username === ''" (click)="username=''">reset</button>
 <app-servers></app-servers>
+<app-employeelist></app-employeelist>
+
+
