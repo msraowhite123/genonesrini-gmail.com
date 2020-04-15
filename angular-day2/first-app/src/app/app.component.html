@@ -1,0 +1,25 @@
+<input type="text" [(ngModel)]="name">
+<p>Hi {{ name  ?name : 'no name'}}</p>
+<img src="{{imagePath}}" />
+{{getFullName()}}
+<br>
+<img [src] ='imagePath'/> : property binding 
+<br>
+<button [disabled]='isDisabled'> click me </button>
+<br>
+<button class='colorClass' [class]='classesToApply'>My Button</button> class-binding
+<br>
+<button (click) ='onCLick()'>click me</button> Event binding
+
+<br>
+
+
+<br>
+UserName
+<input type="text" [(ngModel)]="username">
+{{username}}
+<button [disabled]="username === ''" (click)="username=''">reset</button>
+<app-servers></app-servers>
+<app-employeelist></app-employeelist>
+
+
